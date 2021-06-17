@@ -1,0 +1,112 @@
+{
+    "bedrijven": {
+        "Frits' Fristi": {
+            "start_value": 38.620946608651764,
+            "value": 70.52002367155048
+        },
+        "Bob de bouwer": {
+            "start_value": 74.53950044595857,
+            "value": 71.60049834666705
+        },
+        "Bram's brommers": {
+            "start_value": 94.3168030368677,
+            "value": 72.46702944593709
+        },
+        "Mur BV": {
+            "start_value": 93.67133237914774,
+            "value": 78.42785042611015
+        },
+        "Bison Burgers": {
+            "start_value": 29.913752865525055,
+            "value": 63.79435166574271
+        },
+        "Sjoerd's Coffeeshop": {
+            "start_value": 16.424842384515614,
+            "value": 12.811117433866826
+        }
+    },
+    "current_round": 3,
+    "history": [
+        {
+            "Frits' Fristi": {
+                "start_value": 38.620946608651764,
+                "value": 70.52002367155048
+            },
+            "Bob de bouwer": {
+                "start_value": 74.53950044595857,
+                "value": 71.60049834666705
+            },
+            "Bram's brommers": {
+                "start_value": 94.3168030368677,
+                "value": 72.46702944593709
+            },
+            "Mur BV": {
+                "start_value": 93.67133237914774,
+                "value": 78.42785042611015
+            },
+            "Bison Burgers": {
+                "start_value": 29.913752865525055,
+                "value": 63.79435166574271
+            },
+            "Sjoerd's Coffeeshop": {
+                "start_value": 16.424842384515614,
+                "value": 12.811117433866826
+            }
+        },
+        {
+            "Frits' Fristi": {
+                "start_value": 38.620946608651764,
+                "value": 70.52002367155048
+            },
+            "Bob de bouwer": {
+                "start_value": 74.53950044595857,
+                "value": 71.60049834666705
+            },
+            "Bram's brommers": {
+                "start_value": 94.3168030368677,
+                "value": 72.46702944593709
+            },
+            "Mur BV": {
+                "start_value": 93.67133237914774,
+                "value": 78.42785042611015
+            },
+            "Bison Burgers": {
+                "start_value": 29.913752865525055,
+                "value": 63.79435166574271
+            },
+            "Sjoerd's Coffeeshop": {
+                "start_value": 16.424842384515614,
+                "value": 12.811117433866826
+            }
+        },
+        {
+            "Frits' Fristi": {
+                "start_value": 38.620946608651764,
+                "value": 70.52002367155048
+            },
+            "Bob de bouwer": {
+                "start_value": 74.53950044595857,
+                "value": 71.60049834666705
+            },
+            "Bram's brommers": {
+                "start_value": 94.3168030368677,
+                "value": 72.46702944593709
+            },
+            "Mur BV": {
+                "start_value": 93.67133237914774,
+                "value": 78.42785042611015
+            },
+            "Bison Burgers": {
+                "start_value": 29.913752865525055,
+                "value": 63.79435166574271
+            },
+            "Sjoerd's Coffeeshop": {
+                "start_value": 16.424842384515614,
+                "value": 12.811117433866826
+            }
+        }
+    ],
+    "players": {
+        "Speler 1": {}
+    }
+}
