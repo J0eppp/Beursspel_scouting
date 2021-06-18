@@ -1,6 +1,7 @@
 from Player import Player
 from Company import Company
 from Stock import Stock
+from copy import deepcopy
 
 
 class Game():
@@ -22,8 +23,8 @@ class Game():
 
     def next_round(self):
         # Save everthing to the history arrays
-        self.state["company_history"].append(self.state["companies"])
-        self.state["player_history"].append(self.state["players"])
+        self.state["company_history"].append(deepcopy(self.state["companies"]))
+        self.state["player_history"].append(deepcopy(self.state["players"]))
 
         # Next round for the companies (update the price etc)
         for company in self.state["companies"]:

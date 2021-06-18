@@ -17,6 +17,15 @@ class Player():
                     # Found company
                     worth += stock.state["company"].state["value"]
         return worth
+    
+    def worth(self, companies):
+        worth = self.state["capital"]
+        for stock in self.state["stocks"]:
+            for company in companies:
+                if company.state["name"] == stock.state["company"].state["name"]:
+                    # Found company
+                    worth += stock.state["company"].state["value"]
+        return worth
 
     def buy_stock(self, stock: Stock):
         self.state["stocks"].append(stock)

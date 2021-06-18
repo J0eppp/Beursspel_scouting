@@ -16,9 +16,17 @@ player_ax = None
 player_stocks_ax = None
 company_ax = None
 stocks_ax = None
+
+history_companies_ax = None
+history_players_ax = None
+
 company_bars = None
 player_bars = None
 stocks_bars = None
+player_stocks_bars = None
+
+history_companies_lines = None
+history_players_lines = None
 
 
 def draw():
@@ -26,11 +34,15 @@ def draw():
     global player_ax
     global company_ax
     global stocks_ax
+    global history_companies_ax
+    global history_players_ax
     global game
     global company_bars
     global player_bars
     global stocks_bars
     global player_stocks_bars
+    global history_companies_lines
+    global history_players_lines
     player_names = []
     player_capitals = []
     for player in game.state["players"]:
@@ -69,7 +81,6 @@ def draw():
         stocks_bars[i].set_width(company_stocks_percentages[i])
 
     player_max = max(player_capitals) + 10
-    # player_min = min(player_capitals)
     player_min = 0
     player_ax.set_ylim(player_min, player_max)
 
@@ -78,12 +89,72 @@ def draw():
     player_stocks_ax.set_ylim(players_worth_min, players_worth_max)
 
     company_max = max(company_values) + 10
-    # company_min = min(company_values)
     company_min = 0
     company_ax.set_xlim(company_min, company_max)
 
-    player_ax.plot()
-    company_ax.plot()
+    fig.canvas.draw()
+
+
+def draw_next_round():
+    global fig
+    global history_companies_ax
+    global history_players_ax
+    global game
+    global history_companies_lines
+    global history_players_lines
+
+    player_names = []
+    for player in game.state["players"]:
+        player_names.append(player.state["name"])
+
+    company_names = []
+    for company in game.state["companies"]:
+        company_names.append(company.state["name"])
+
+    if game.state["round"] > 0:
+        player_history = []
+        player_history_x = list(
+            range(1, len(game.state["player_history"]) + 1))
+        for _ in game.state["player_history"][0]:
+            player_history.append([])
+
+        for player_i in range(len(player_history)):
+            for round_i in range(len(game.state["player_history"])):
+                # print("Player: " + str(player_i) + " round: " + str(round_i) + " -> " + str(game.state["player_history"][round_i][player_i].worth(
+                # game.state["company_history"][round_i])))
+                player_history[player_i].append(game.state["player_history"][round_i][player_i].worth(
+                    game.state["company_history"][round_i]))
+
+        history_players_ax.clear()
+        history_companies_ax.clear()
+
+        for i in range(len(player_history)):
+            player = player_history[i]
+            # print("Player: " + str(player))
+            name = player_names[i]
+            line = history_players_ax.plot(
+                player_history_x, player, label=name)
+
+        history_players_ax.legend()
+
+        company_history = []
+        company_history_x = list(
+            range(1, len(game.state["company_history"]) + 1))
+        for _ in game.state["company_history"][0]:
+            company_history.append([])
+
+        for company_i in range(len(company_history)):
+            for round_i in range(len(game.state["company_history"])):
+                company_history[company_i].append(
+                    game.state["company_history"][round_i][company_i].state["value"])
+
+        for i in range(len(company_history)):
+            company = company_history[i]
+            name = company_names[i]
+            history_companies_ax.plot(company_history_x, company, label=name)
+
+        history_companies_ax.legend()
+
     fig.canvas.draw()
 
 
@@ -94,11 +165,16 @@ def main():
     global player_stocks_ax
     global company_ax
     global stocks_ax
+    global history_companies_ax
+    global history_players_ax
     global game
     global company_bars
     global player_stocks_bars
     global player_bars
     global stocks_bars
+    global history_companies_lines
+    global history_players_lines
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", action="store", dest="data_file", type=str)
     args = parser.parse_args()
@@ -139,28 +215,27 @@ def main():
     game.state["players"].append(Player("Player7", 100))
     game.state["players"].append(Player("Player8", 100))
 
-    for company in game.state["companies"]:
-        print(company.state["name"])
-
-    for player in game.state["players"]:
-        print(player.state["name"])
-
     # Display data
-    fig, axs = plt.subplots(2, 2)
-    print(axs)
+    fig, axs = plt.subplots(2, 3)
     player_ax = axs[0, 0]
     player_stocks_ax = axs[1, 0]
     company_ax = axs[1, 1]
     stocks_ax = axs[0, 1]
-    # player_ax = axs[0]
-    # company_ax = axs[1]
-    # stocks_ax = axs[2]
-    # company_ax = fig.add_subplot(111)
+    history_companies_ax = axs[0, 2]
+    history_players_ax = axs[1, 2]
 
     player_ax.set_title("Kapitaal")
     player_stocks_ax.set_title("Waarde aandelen spelers")
     company_ax.set_title("Waarde bedrijf")
     stocks_ax.set_title("Percentage aandelen verkocht")
+    history_players_ax.set_title("Geschiedenis waarde speler")
+    history_companies_ax.set_title("Geschiedenis waarde bedrijven")
+
+    history_players_ax.set_xlabel("Ronde")
+    history_players_ax.set_ylabel("Euro")
+
+    history_companies_ax.set_xlabel("Ronde")
+    history_companies_ax.set_ylabel("Euro")
 
     # Display player capital
     player_names = []
@@ -188,7 +263,6 @@ def main():
         company_names, company_values, align="center")
 
     player_max = max(player_capitals) + 10
-    # player_min = min(player_capitals)
     player_min = 0
     player_ax.set_ylim(player_min, player_max)
 
@@ -197,13 +271,11 @@ def main():
     player_stocks_ax.set_ylim(players_worth_min, players_worth_max)
 
     company_max = max(company_values) + 10
-    # company_min = min(company_values)
     company_min = 0
     company_ax.set_xlim(company_min, company_max)
 
     company_stocks_percentages = []
     for company in game.state["companies"]:
-        # company_names.append(company.state["name"])
         company_stocks_percentages.append(
             100 - (company.state["start_available"] - company.state["available"] / company.state["start_available"]) * 100)
 
@@ -298,6 +370,7 @@ def main():
 
         elif command.startswith("next"):
             game.next_round()
+            draw_next_round()
 
         # Update the plt
         draw()
