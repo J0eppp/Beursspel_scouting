@@ -34,7 +34,7 @@ class Company():
         new_value = self.state["value"] * 2.5 * (bought_factor + 0.3)
         # new_value = (self.state["value"] * ((0.01 *
         #              (self.state["bought"] + 0.5) / self.state["available"]))) * 100
-        self.state["value"] = new_value
+        self.state["value"] = abs(new_value)
         self.state["bought"] = 0
         name = self.state["name"]
         print(f"{name} new value: {new_value}")

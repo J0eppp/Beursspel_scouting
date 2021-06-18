@@ -1,8 +1,6 @@
 import argparse
 from random import random
 import matplotlib.pyplot as plt
-import numpy as np
-import math
 
 from Game import Game
 from Company import Company
@@ -154,6 +152,12 @@ def draw_next_round():
             history_companies_ax.plot(company_history_x, company, label=name)
 
         history_companies_ax.legend()
+
+        history_players_ax.set_xlabel("Ronde")
+        history_players_ax.set_ylabel("Euro")
+
+        history_companies_ax.set_xlabel("Ronde")
+        history_companies_ax.set_ylabel("Euro")
 
     fig.canvas.draw()
 
@@ -367,6 +371,75 @@ def main():
             for _ in range(amount):
                 if game.sell_stock(player_index, company_index) == False:
                     print("error selling stock")
+
+        elif command.startswith("infoc"):
+            cmd = command.split(" ")
+            if len(cmd) < 2:
+                print("Please enter a company's name")
+                continue
+            name = cmd[1]
+            for company in game.state["companies"]:
+                if company.state["name"] == name:
+                    worth = company.state["value"]
+                    print(f"De waarde van {name} is €{worth}")
+                    available = company.state["available"]
+                    print(f"{name} heeft {available} aandelen beschikbaar")
+
+        elif command.startswith("infop"):
+            cmd = command.split(" ")
+            if len(cmd) < 2:
+                print("Please enter a player's name")
+                continue
+
+            name = cmd[1]
+            for player in game.state["players"]:
+                if player.state["name"] == name:
+                    capital = player.state["capital"]
+                    stocks = {
+                        "Frits'_Fristi": 0,
+                        "Bob_de_bouwer": 0,
+                        "Bram's_Brommers": 0,
+                        "Mur_BV": 0,
+                        "Bison_Burgers": 0,
+                        "Sjoerd's_Coffeeshop": 0,
+                        "Kut_Ideeën_Inc.": 0,
+                        "Bordspellengebied": 0,
+                        "Daans_Drank": 0,
+                        "Lucas'_Kinder_Kelder": 0,
+                        "Adolf's_Schilderstore": 0,
+                        "Nordin's_Kapsalon": 0,
+                    }
+                    companies = {
+                        "Frits'_Fristi": 0,
+                        "Bob_de_bouwer": 0,
+                        "Bram's_Brommers": 0,
+                        "Mur_BV": 0,
+                        "Bison_Burgers": 0,
+                        "Sjoerd's_Coffeeshop": 0,
+                        "Kut_Ideeën_Inc.": 0,
+                        "Bordspellengebied": 0,
+                        "Daans_Drank": 0,
+                        "Lucas'_Kinder_Kelder": 0,
+                        "Adolf's_Schilderstore": 0,
+                        "Nordin's_Kapsalon": 0,
+                    }
+                    for stock in player.state["stocks"]:
+                        # if stocks.get[stock.state["company"].state["name"]] == None:
+                        #     stocks[stock.state["company"].state["name"]] = 1
+                        #     companies[stock.state["company"].state["name"]
+                        #               ] = stock.state["company"].state["value"]
+                        # else:
+                        stocks[stock.state["company"].state["name"]] += 1
+                        companies[stock.state["company"].state["name"]
+                                  ] = stock.state["company"].state["value"]
+
+                    print(f"Naam: {name}")
+                    print(f"Kapitaal: {capital}")
+                    for company in stocks:
+                        total_value = stocks[company] * companies[company]
+                        print(
+                            f"Je hebt {stocks[company]} van {company}, dat is €{total_value}")
+                    print(stocks)
 
         elif command.startswith("next"):
             game.next_round()
