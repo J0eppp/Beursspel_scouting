@@ -32,40 +32,38 @@ class Game():
         self.state["round"] += 1
         return True
 
-    def buy_stock(self, player: Player, company: Company):
-        if not player.state["capital"] >= company.state["value"]:
+    def buy_stock(self, player: int, company: int):
+        if not self.state["players"][player].state["capital"] >= self.state["companies"][company].state["value"]:
+            print("not enough money to buy stock")
             return False
 
         # None were available
-        if not company.state["available"] == 0:
+        if self.state["companies"][company].state["available"] == 0:
+            print("stocks are not available")
             return False
 
         # Create a Stock instance
-        stock = Stock(company)
+        stock = Stock(self.state["companies"][company])
 
         # Add the stock to the player's stocks and make the player pay
-        player.buy_stock(stock)
+        self.state["players"][player].buy_stock(stock)
 
         # Notify the company that a stock was bought
-        company.bought()
+        self.state["companies"][company].bought()
         return True
 
-    def sell_stock(self, player: Player, company: Company):
+    def sell_stock(self, player: int, company: int):
         # Check if the player has this stock
-        player_index = self.state["players"].index(player)
-        player = self.state["players"][player_index]
-        for stock in player.state["stocks"]:
-            if stock.state["company"].state["name"] == company.state["name"]:
+        for stock in self.state["players"][player].state["stocks"]:
+            if stock.state["company"].state["name"] == self.state["companies"][company].state["name"]:
                 # Same company
                 # Sell stock
-                player.state["capital"] += company.state["value"]
+                self.state["players"][player].state["capital"] += self.state["companies"][company].state["value"]
                 # Remove stock from player
-                player.state["stocks"].remove(stock)
-
-                # Save the player to the game object
-                self.state["players"][player_index] = player
+                self.state["players"][player].state["stocks"].remove(stock)
 
                 # Notify the company that a stock was sold
-                company.sold()
+                self.state["companies"][company].sold()
                 return True
+        print("stock not found")
         return False
