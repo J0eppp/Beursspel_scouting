@@ -8,7 +8,8 @@ class Game():
         self.state = {
             "companies": [],
             "players": [],
-            "history": [],
+            "company_history": [],
+            "player_history": [],
             "round": 0,
         }
 
@@ -19,8 +20,24 @@ class Game():
 
         return True
 
+    def next_round(self):
+        # Save everthing to the history arrays
+        self.state["company_history"].append(self.state["companies"])
+        self.state["player_history"].append(self.state["players"])
+
+        # Next round for the companies (update the price etc)
+        for company in self.state["companies"]:
+            company.next_round()
+
+        self.state["round"] += 1
+        return True
+
     def buy_stock(self, player: Player, company: Company):
         if not player.state["capital"] >= company.state["value"]:
+            return False
+
+        # None were available
+        if not company.state["available"] == 0:
             return False
 
         # Create a Stock instance
