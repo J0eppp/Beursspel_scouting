@@ -441,6 +441,43 @@ def main():
                             f"Je hebt {stocks[company]} van {company}, dat is €{total_value}")
                     print(stocks)
 
+        elif command.startswith("addstocks"):
+            cmd = command.split(" ")
+            if len(cmd) < 3:
+                print("Missing company name and/or amount")
+                continue
+
+            for company in game.state["companies"]:
+                if company.state["name"] == cmd[1]:
+                    amount = 0
+                    try:
+                        amount = int(cmd[2])
+                    except ValueError:
+                        print("invalid amount of stocks")
+                        continue
+
+                    company.state["available"] += amount
+                    company.state["start_available"] += amount
+                    print("Updated amount of available stocks")
+
+        elif command.startswith("setprice"):
+            cmd = command.split(" ")
+            if len(cmd) < 3:
+                print("Missing company name and/or price")
+                continue
+
+            for company in game.state["companies"]:
+                if company.state["name"] == cmd[1]:
+                    price = 0
+                    try:
+                        price = int(cmd[2])
+                    except ValueError:
+                        print("invalid price of stocks")
+                        continue
+
+                    company.state["value"] = price
+                    print("Updated price of company")
+
         elif command.startswith("next"):
             game.next_round()
             draw_next_round()
